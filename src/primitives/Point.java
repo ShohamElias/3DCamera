@@ -11,7 +11,7 @@ public class Point
 	public Point(Double3 d)
 	{
 		xyz=new Double3(d.d1,d.d2,d.d3);
-		int x, y;
+		int x, y, c;
 	}
 	
 	//public Vector Substruct(Point p) 

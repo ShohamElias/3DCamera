@@ -54,8 +54,10 @@ public class Polygon implements Geometry {
 		if (vertices.length == 3)
 			return; // no need for more tests for a Triangle
 
-		Vector n = plane.getNormal();
-
+		//#$#$#$#$#$#$#$#$#
+		Vector n = plane.getNormal(); //####################################!!!!!!
+//333333333333333333333333333333333333333333333333333
+		
 		// Subtracting any subsequent points will throw an IllegalArgumentException
 		// because of Zero Vector if they are in the same point
 		Vector edge1 = vertices[vertices.length - 1].subtract(vertices[vertices.length - 2]);

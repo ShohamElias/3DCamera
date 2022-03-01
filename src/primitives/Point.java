@@ -2,7 +2,7 @@ package primitives;
 
 public class Point 
 {
-	Double3 xyz;
+	 Double3  xyz;
 	
 	public Point(double x,double y,double z) 
 	{
@@ -14,7 +14,7 @@ public class Point
 		
 	}
 	
-	public Vector substruct(Point p)
+	public Vector subtract(Point p)
 	{
 		return new Vector(xyz.subtract(p.xyz));
 	}

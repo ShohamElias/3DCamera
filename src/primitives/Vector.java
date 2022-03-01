@@ -1,7 +1,5 @@
 package primitives;
 
-import javax.sql.rowset.JoinRowSet;
-
 public class Vector extends Point
 {
 	public Vector(double d, double d2, double d3)
@@ -37,7 +35,7 @@ public class Vector extends Point
 		Double3 double3=xyz.product(v.xyz);
 		return double3.d1+double3.d2+double3.d3;
 	}
-	public Vector crossProducr(Vector v)
+	public Vector crossProduct(Vector v)
 	{
 		double d3=xyz.d1*v.xyz.d2-xyz.d2*v.xyz.d1;
 		double d1=xyz.d2*v.xyz.d3-v.xyz.d2*xyz.d3;

@@ -9,13 +9,13 @@ public class Plane implements Geometry
 	private Vector normal;
 	public Plane(Point p, Vector v)
 	{
-		setP0(p);
+		p0=p;
 		normal=v;
 	}
 	
 	public Plane(Point p,Point p2,Point p3)
 	{
-		setP0(p);
+		p0=p;
 		normal=null;
 	}
 	
@@ -27,8 +27,9 @@ public class Plane implements Geometry
 	public Point getP0() {
 		return p0;
 	}
-
-	public void setP0(Point p0) {
-		this.p0 = p0;
+	
+	public Vector getNormal() {
+		return normal;
 	}
+
 }

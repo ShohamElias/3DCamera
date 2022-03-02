@@ -1,9 +1,23 @@
 package primitives;
 
+import java.util.Objects;
+
 public class Point 
 {
-	 Double3  xyz;
+	 Double3 xyz;
 	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Point other = (Point) obj;
+		return Objects.equals(xyz, other.xyz);
+	}
 	public Point(double x,double y,double z) 
 	{
 		xyz=new Double3(x, y, z);
@@ -25,8 +39,8 @@ public class Point
 	
 	public double distanceSquared(Point p)
 	{
-		Vector vector=new Vector(xyz.subtract(p.xyz)); //##################
-		return vector.lengthSquere();
+		Double3 double3= xyz.subtract(p.xyz); //##################
+		return double3.d1*double3.d1+double3.d2*double3.d2+double3.d3*double3.d3;
 	}
 	public double distance(Point p)
 	{

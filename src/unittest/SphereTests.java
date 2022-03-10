@@ -17,7 +17,8 @@ class SphereTests {
 	 * Test method for {@link geometries.Sphere#getNormal(primitives.Point)}.
 	 */
 	@Test
-	void testGetNormal() {
+	void testGetNormal() 
+	{
 		fail("Not yet implemented");
 	}
 

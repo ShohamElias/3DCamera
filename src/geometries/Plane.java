@@ -10,15 +10,23 @@ public class Plane implements Geometry
 	public Plane(Point p, Vector v)
 	{
 		p0=p;
-		normal=v;
+		normal=v.normalize();
 	}
 	
 	public Plane(Point p,Point p2,Point p3)
 	{
+		if(p.equals(p3)||p.equals(p2)||p2.equals(p3))
+			throw new IllegalArgumentException("same points");
 		p0=p;
-		normal=null;
+		Vector v=new Vector(p.subtract(p2).getXyz());
+		Vector v2=new Vector(p.subtract(p3).getXyz());
+		
+		if(v.getXyz().equals(v2.getXyz()))
+			throw new IllegalArgumentException("same line");
+		
+		normal=v.crossProduct(v2).normalize();
 	}
-	
+	@Override
 	public Vector getNormal(Point p)
 	{
 		return normal;

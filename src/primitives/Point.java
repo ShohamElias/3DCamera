@@ -16,7 +16,7 @@ public class Point
 		if (getClass() != obj.getClass())
 			return false;
 		Point other = (Point) obj;
-		return Objects.equals(xyz, other.xyz);
+		return Objects.equals(getXyz(), other.getXyz());
 	}
 	public Point(double x,double y,double z) 
 	{
@@ -30,21 +30,24 @@ public class Point
 	
 	public Vector subtract(Point p)
 	{
-		return new Vector(xyz.subtract(p.xyz));
+		return new Vector(getXyz().subtract(p.getXyz()));
 	}
 	public Point add(Vector v)
 	{
-		return new Point(xyz.add(v.xyz));
+		return new Point(getXyz().add(v.getXyz()));
 	}
 	
 	public double distanceSquared(Point p)
 	{
-		Double3 double3= xyz.subtract(p.xyz); //##################
+		Double3 double3= getXyz().subtract(p.getXyz()); //##################
 		return double3.d1*double3.d1+double3.d2*double3.d2+double3.d3*double3.d3;
 	}
 	public double distance(Point p)
 	{
 		return Math.sqrt(distanceSquared(p));
 
+	}
+	public Double3 getXyz() {
+		return xyz;
 	}
 }

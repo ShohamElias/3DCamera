@@ -21,9 +21,7 @@ class VectorTests {
 	void testNormalize() 
 	{
 		Vector v=new Vector(1, 2, 3);
-		assertEquals(v.normalize().length(), 1,"test normalize fail");
-		
-		
+		assertEquals(v.normalize().length(), 1,"test normalize fail");				
 	}
 
 	/**

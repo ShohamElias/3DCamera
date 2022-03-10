@@ -6,8 +6,7 @@ public class Vector extends Point
 	{
 		super(d,d2,d3);
 		if(d==d2&&d2==d3&&d3==0)
-			throw new IllegalArgumentException ();
-		
+			throw new IllegalArgumentException ("vector 0");		
 	}
 	
 	public Vector(Double3 d)

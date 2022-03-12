@@ -6,6 +6,8 @@ package unittest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import primitives.Point;
 import primitives.Vector;
 
 /**
@@ -30,16 +32,21 @@ class VectorTests {
 	@Test
 	void testAddVector()
 	{
-		fail("Not yet implemented");
-	}
+		Vector v=new Vector(1, 2, 3);
+		assertEquals(v.add(new primitives.Vector(-1, -2, -3)), new Vector(0, 0, 0),"add test fail");
+		}
 
 	/**
 	 * Test method for {@link primitives.Vector#scale(double)}.
 	 */
 	@Test
-	void testScale() {
-		fail("Not yet implemented");
-	}
+	void testScale() 
+	{
+		Vector v=new Vector(1, 2, 3);
+		assertEquals(v.scale(3), new Vector(3, 6, 9),"scale test fail");
+		assertEquals(v.scale(0), new Vector(0, 0, 0),"zero scale test fail");
+		
+		}
 
 	/**
 	 * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.

@@ -50,4 +50,8 @@ public class Point
 	public Double3 getXyz() {
 		return xyz;
 	}
+	public double getX()
+	{
+	  return xyz.d1;
+	}
 }

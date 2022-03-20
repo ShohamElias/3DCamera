@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
@@ -17,5 +19,11 @@ public class Tube implements Geometry
 		
 	    vector=new Vector(point.subtract(p).getXyz());
 		return vector.normalize();
+	}
+	
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

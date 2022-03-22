@@ -3,7 +3,6 @@ import  primitives.Point;
 import java.util.List;
 
 import primitives.*;
-import static primitives.Util.*;
 
 public class Geometries
 {

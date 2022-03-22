@@ -2,7 +2,6 @@ package unittest;
 import geometries.*;
 import primitives.*;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;

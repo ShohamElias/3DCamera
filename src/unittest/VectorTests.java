@@ -2,12 +2,13 @@
  * 
  */
 package unittest;
+import primitives.Point;
+import primitives.Util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import primitives.Point;
 import primitives.Vector;
 
 /**
@@ -33,7 +34,8 @@ class VectorTests {
 	void testAddVector()
 	{
 		Vector v=new Vector(1, 2, 3);
-		assertEquals(v.add(new primitives.Vector(-1, -2, -3)), new Vector(0, 0, 0),"add test fail");
+		Point p=new Point(1, 0, 0);
+		assertEquals(v.add(new primitives.Vector(-1, -2, -3)), p.subtract(new Point(1, 0, 0)),"add test fail");
 		}
 
 	/**
@@ -44,7 +46,8 @@ class VectorTests {
 	{
 		Vector v=new Vector(1, 2, 3);
 		assertEquals(v.scale(3), new Vector(3, 6, 9),"scale test fail");
-		assertEquals(v.scale(0), new Vector(0, 0, 0),"zero scale test fail");
+		Point p=new Point(1, 0, 0);
+		assertEquals(v.scale(0), p.subtract(new Point(1, 0, 0)),"zero scale test fail");
 		
 		}
 
@@ -65,7 +68,8 @@ class VectorTests {
 	 * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
 	 */
 	@Test
-	void testCrossProduct() {
+	void testCrossProduct()
+	{
 		Vector v1 = new Vector(1, 2, 3);
 
         // ============ Equivalence Partitions Tests ==============

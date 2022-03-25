@@ -14,11 +14,35 @@ import org.junit.jupiter.api.Test;
  */
 public class TriangleTests 
 {
+	
+	/**
+	 * Test method for {@link geometries.Polygon#getNormal(primitives.Point)}.
+	 */
+	@Test
+	public void testGetNormal() 
+	{
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: There is a simple single test here
+		try
+		{
+			Triangle myTriangle = new Triangle(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0));
+			double sqrt3 = Math.sqrt(1d / 3);
+			Vector normal=new Vector(sqrt3, sqrt3, sqrt3);
+		    assertEquals( normal , myTriangle.getNormal(new Point(0, 0, 1)),"Bad normal to trinagle");
+	
+		}
+		catch(Exception ex) 
+		{
+			fail("for vectors that not zero vector does not need throw an exception");
+		}
+	}
+	
 	 @Test
 	    public void testfindIntersections() 
 	    {
+		 
 	       
-	        	Triangle triangle = new Triangle(new Point(0, 1, 0), new Point(2, 6, 0), new Point(5, 0, 0));
+	        Triangle triangle = new Triangle(new Point(0, 1, 0), new Point(2, 6, 0), new Point(5, 0, 0));
 	        
 
 	        // ============ Equivalence Partitions Tests ====================
@@ -50,6 +74,7 @@ public class TriangleTests
 	        // TC13: The ray On the straight line continuing the side of the triangle
 	        ray = new Ray(new Point(3.86, -4.95, 0), new Vector(new Point(2.97, 1.28, 0).getXyz()));
 	        assertNull(triangle.findIntersections(ray), "the intersection point is out of the triangle - need 0 intersections");
+		
 
 	        
 

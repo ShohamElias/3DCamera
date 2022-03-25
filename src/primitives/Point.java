@@ -5,19 +5,7 @@ import java.util.Objects;
 public class Point 
 {
 	 Double3 xyz;
-	
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Point other = (Point) obj;
-		return Objects.equals(getXyz(), other.getXyz());
-	}
+
 	public Point(double x,double y,double z) 
 	{
 		xyz=new Double3(x, y, z);
@@ -53,5 +41,21 @@ public class Point
 	public double getX()
 	{
 	  return xyz.d1;
+	}
+	@Override
+	public String toString() 
+	{
+		return "Point: ("+ xyz.d1 + ","+ xyz.d2+"," + xyz.d3+")";
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Point other = (Point) obj;
+		return Objects.equals(getXyz(), other.getXyz());
 	}
 }

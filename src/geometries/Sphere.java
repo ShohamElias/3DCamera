@@ -12,10 +12,15 @@ public class Sphere implements Geometry
 {
 	private Point center;
 	private double radius;
-	
+	/**
+	 * Constructor that receives point to the center and double to the radius
+	 * 
+	 * @param point Point
+	 * @param d double
+	 * */
 	public Sphere(double d, Point point) 
 	{
-		// TODO Auto-generated constructor stub
+		super();
 		radius =d;
 		center =point;
 		
@@ -26,13 +31,17 @@ public class Sphere implements Geometry
 	{
 		if(center.distance(p)!=radius)
 			throw new IllegalArgumentException("out of the sphere");
-		Vector vector=new Vector(center.subtract(p).getXyz());
-		return vector.normalize();
+		return center.subtract(p).normalize();
 	}
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public String toString() 
+	{
+		return "Sphere: center=" + center + ", radius=" + radius;
 	}
 }

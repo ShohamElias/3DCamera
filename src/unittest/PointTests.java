@@ -56,7 +56,7 @@ class PointTests {
 	@Test
 	void testDistance()
 	{
-		Point p=new Point(4,6,8);
+		Point p=new Point(4,6,2);
 		assertEquals(p.distance(new Point(0, 6, -1)), 5,"distance between 2 Points fail");
 		assertEquals(p.distance(p), 0,"distanc between same point fail");
 	}

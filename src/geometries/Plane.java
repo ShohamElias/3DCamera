@@ -4,6 +4,7 @@ import java.util.List;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
 public class Plane implements Geometry
@@ -47,8 +48,28 @@ public class Plane implements Geometry
 	@Override
 	public List<Point> findIntersections(Ray ray)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Vector vec=p0.subtract(ray.getP0());//creating a new vector according to the point q0 and the starting point of the ray (P0)
+
+			double t=normal.dotProduct(vec);//dot product between the vector we created and the normal of the plane
+
+			if(Util.isZero(normal.dotProduct(ray.getDir()))) //if the dot product equals 0 it means that the ray is parallel ,makbil, to the plane
+				return null;
+			t=t/(normal.dotProduct(ray.getDir()));
+
+			if(t==0) //if the distance between the begining point of the ray and the plane so don't count it as an intersection
+				return null;//no intersections
+			else if(t > 0) // the ray crosses the plane
+			{
+				Point p=ray.getPoint(t);//get the new point on the ray, multiplied by the scalar t. p is the intersection point.
+				return List.of(p);//if so, return the point- the intersection
+			}
+			else // the ray doesn't cross the plane
+				return null;	
+		}
+		catch(Exception ex) {
+			return null;
+		}
 	}
 
 }

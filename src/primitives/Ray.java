@@ -1,5 +1,7 @@
 package primitives;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
+
 public class Ray
 {
   private final Point p0;
@@ -21,6 +23,6 @@ public Vector getDir() {
 
 public Point getPoint(double t) 
 {
-	return p0.add(dir.scale(t));
+	return  p0.add(dir.scale(t));
 }
 }

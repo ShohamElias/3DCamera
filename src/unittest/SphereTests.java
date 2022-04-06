@@ -24,11 +24,12 @@ class SphereTests {
 	void testGetNormal() 
 	{
 		// ============ Equivalence Partitions Tests ==============
-					double radius=5;
-					Point center=new Point(1, 2, 3);		
-					Sphere mySphere=new Sphere(radius, center);
-					Vector normal=new Vector(4d/5, 0, 3d/5);
-					assertEquals( normal, mySphere.getNormal(new Point(5,2,6)),"bad normal to sphere");
+		Point p= new Point(1, 1, 6);
+		Point p1=new Point(1,1,1);
+		Sphere s = new Sphere(5,p1);
+		Vector v= p1.subtract(p).normalize();
+		// ============ Equivalence Partitions Tests ==============
+		assertEquals(v,s.getNormal(p),"Bad normal to sphere");
 	}
 	
 	/**
@@ -42,17 +43,18 @@ class SphereTests {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray's line is outside the sphere (0 points)
-        assertNull(sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(1, 1, 0))),
+        assertEquals(null,sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(1, 1, 0))),
                    "Ray's line out of sphere");
 
-        // TC02: Ray starts before and crosses the sphere (2 points)
+     // TC02: Ray starts before and crosses the sphere (2 points)
         Point p1 = new Point(0.0651530771650466, 0.355051025721682, 0);
         Point p2 = new Point(1.53484692283495, 0.844948974278318, 0);
-        List<Point> result = sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(3, 1, 0)));
-        assertEquals(2, result.size(), "Wrong number of points");
+        List<Point> result = sphere.findIntersections(new Ray(new Point(-1, 0, 0),
+                                                                new Vector(3, 1, 0)));
+        assertEquals( 2, result.size(),"Wrong number of points");
         if (result.get(0).getX() > result.get(1).getX())
-        	result = List.of(result.get(1), result.get(0));
-        assertEquals(List.of(p1, p2), result, "Ray crosses sphere");
+            result = List.of(result.get(1), result.get(0));
+        assertEquals( List.of(p1, p2), result,"Ray crosses sphere");
 
      // TC03: Ray starts inside the sphere (1 point)	        
         result = sphere.findIntersections(new Ray(new Point(1, 0.5, 0),new Vector(-1, -1, -2)));
@@ -77,10 +79,12 @@ class SphereTests {
 
         // TC13: Ray starts before the sphere (2 points)
         result = sphere.findIntersections(new Ray(new Point(1, -2, 0),new Vector(0, 1, 0)));
-        assertEquals( 2, result.size(), "Wrong number of points");
-        if (result.get(0).getX() > result.get(1).getX())
-            result = List.of(result.get(1), result.get(0));
-        assertEquals( List.of(new Point(1, 1, 0), new Point(1, -1, 0)), result, "Ray crosses sphere");/////??????????
+		assertEquals( 2, result.size(),"Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())//switches between the points to match 
+		{
+			result = List.of(result.get(1), result.get(0));
+		}
+		assertEquals( List.of(new Point(1,1,0), new Point(1,-1,0)), result,"Ray crosses sphere");
         
         // TC14: Ray starts at sphere and goes inside (1 points)
         result = sphere.findIntersections(new Ray(new Point(1, -1, 0),new Vector(0, 1, 0)));

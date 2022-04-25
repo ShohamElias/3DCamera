@@ -1,6 +1,10 @@
 package renderer;
+import java.util.MissingResourceException;
+
+import lighting.AmbientLight;
 import primitives.*;
 import primitives.Util;
+import scene.Scene;
 public class Camera 
 {
 	//----- camera ------
@@ -13,6 +17,9 @@ public class Camera
 	private double width;
 	private double height;
 	private double distance;
+	
+	private ImageWriter imgWriter;
+	private RayTracerBase rayTracer;
 	
 	/**
 	 * this constructor creates a camera
@@ -54,7 +61,8 @@ public class Camera
 	 * @param distance
 	 * @return camera
 	 */
-	public Camera setDistance(double distance) {
+	public Camera setDistance(double distance) 
+	{
 		this.distance=distance;
 		return this;
 	}
@@ -110,4 +118,78 @@ public class Camera
 		return p0;
 	}
 
+	/**
+	 * PDS: gets the AmbientLight and set's it in the scene.
+	 * we are using the Builder design pattern,and that's why we returned the scene itself
+	 * @param background
+	 * @return scene
+	 */
+	public Camera setImageWriter(ImageWriter img)
+	{
+		this.imgWriter = img;
+		return this;
+	}
+	
+	/**
+	 * PDS: gets the AmbientLight and set's it in the scene.
+	 * we are using the Builder design pattern,and that's why we returned the scene itself
+	 * @param background
+	 * @return scene
+	 */
+	public Camera setRayTracerBase(RayTracerBase rtb)
+	{
+		this.rayTracer = rtb;
+		return this;
+	}
+	
+
+	/**
+	 * This function renders image's pixel color map from the scene included with
+	 * the Renderer object
+	 */
+	public void renderImage()
+	{
+		if ( imgWriter == null)
+			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "IMAGE_WRITER");
+		if (rayTracer == null)
+			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "RAY_TRACER");
+
+		int nX = imgWriter.getNx();
+		int nY = imgWriter.getNy();
+
+		for (int i = 0; i < nX; ++i)
+			for (int j = 0; j < nY; ++j)
+			{
+				Ray ray = constructRay(nX, nY, j, i);
+				Color rayColor = rayTracer.traceRay(ray);
+				imgWriter.writePixel(j, i, rayColor); 
+			}
+
+	}
+	
+	public void printGrid(int interval, Color color) 
+	{
+		if (imgWriter == null)
+			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "IMAGE_WRITER");
+
+		int nX = imgWriter.getNx();
+		int nY = imgWriter.getNy();
+
+		for (int i = 0; i < nY; ++i)
+			for (int j = 0; j < nX; ++j)
+				if (j % interval == 0 || i % interval == 0)
+					imgWriter.writePixel(j, i, color);
+	}
+	
+	/**
+	 * A function that finally creates the image.
+	 * This function delegates the function of a class imageWriter
+	 * */
+	public void writeToImage()
+	{
+		if (imgWriter == null)
+			throw new MissingResourceException("This function must have values in all the fileds", "ImageWriter", "imageWriter");
+		
+		imgWriter.writeToImage();
+	}
 }

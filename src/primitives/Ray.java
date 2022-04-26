@@ -2,7 +2,7 @@ package primitives;
 import java.util.List;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
-
+import geometries.Intersectable.GeoPoint; 
 public class Ray
 {
   private final Point p0;
@@ -52,25 +52,32 @@ public boolean equals(Object obj) {
  * @param lst_point 
  * @return point3D ,the closest point to the ray
  */
-public Point findClosestPoint (List<Point> lst_point) 
+public Point findClosestPoint(List<Point> points) 
 {
-	if (lst_point.isEmpty()) 
-		return null;
-	double min_dis=p0.distance(lst_point.get(0));//we assumed that the first point is the closest= resetting
-	double dis;
-	Point target=lst_point.get(0);//as above...
-	for(int i=1;i<lst_point.size();i++) 
-	{
-		//moves through the points of the given list and compares the distances between the 
-		//current point to the starting point of the ray 
-		dis=p0.distance(lst_point.get(i));
-		if(dis<min_dis) //if its closer:
-		{
-			min_dis=dis;
-			target=lst_point.get(i);//saving the point
-		}
-	}
-	return target;//returning the closest point
+    return points == null || points.isEmpty() ? null
+           : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
 }
 
+
+/**
+ * @param lst_point 
+ * @return GeoPoint ,the closest point to the ray
+ */
+public GeoPoint findClosestGeoPoint (List<GeoPoint> lst_point) {
+	if (lst_point==null)//if the list is empty
+		return null;
+	double min_dis=p0.distance(lst_point.get(0).point);//for the sake of programming we assumed that the first point is the closest 
+	double dis;
+	GeoPoint target=lst_point.get(0);//as above...
+	for(int i=1;i<lst_point.size();i++) {//this loop moves through the points of the given list and compares the distances between the 
+		//current point to the starting point of the ray 
+		dis=p0.distance(lst_point.get(i).point);
+		if(dis<min_dis) {
+			min_dis=dis;
+			target=lst_point.get(i);
+		}
+	}
+	return target;
+
+}
 }

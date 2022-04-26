@@ -7,7 +7,7 @@ import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
 
-public class Plane implements Geometry
+public class Plane extends Geometry
 {
 	private Point p0;
 	private Vector normal;
@@ -45,9 +45,9 @@ public class Plane implements Geometry
 		return normal;
 	}
 
+	
 	@Override
-	public List<Point> findIntersections(Ray ray)
-	{
+	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		try {
 			Vector vec=p0.subtract(ray.getP0());//creating a new vector according to the point q0 and the starting point of the ray (P0)
 
@@ -62,7 +62,7 @@ public class Plane implements Geometry
 			else if(t > 0) // the ray crosses the plane
 			{
 				Point p=ray.getPoint(t);//get the new point on the ray, multiplied by the scalar t. p is the intersection point.
-				return List.of(p);//if so, return the point- the intersection
+				return List.of(new GeoPoint(this,p));//if so, return the point- the intersection
 			}
 			else // the ray doesn't cross the plane
 				return null;	

@@ -1,4 +1,5 @@
 package scene;
+import lighting.LightSource;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -18,7 +19,8 @@ public class Scene {
 	public Color background=Color.BLACK;//the color of the background
 	public AmbientLight ambientLight=new AmbientLight();//the ambient light with default value -black
 	public Geometries geometries=null;//a geometry model with default geometry value.
-	
+	public List<LightSource> lights;	//the light sources in the scene
+
 	////////////// ctor ////////////////////
 	/**
 	 * a constructor that sets the name of the scene from a given string and initializes 
@@ -29,6 +31,8 @@ public class Scene {
 	{
 		this.name = name;
 		geometries=new Geometries();
+		lights=new LinkedList<LightSource>();//reset empty list of lights
+
 	}
 	
 	/////////////  set  /////////////////////
@@ -65,5 +69,15 @@ public class Scene {
 		this.geometries = geometries;
 		return this;
 	}
-
+	
+	/**
+	 * @param lights
+	 * @return the scene itself to allow design pattern of builder- to concatenate calls to setters.
+	 */
+	public Scene setLights(LightSource...lights) 
+	{  
+        this.lights.addAll(Arrays.asList(lights));
+        return this;
+	}
+	
 }

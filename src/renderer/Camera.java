@@ -147,7 +147,7 @@ public class Camera
 	 * This function renders image's pixel color map from the scene included with
 	 * the Renderer object
 	 */
-	public void renderImage()
+	public Camera renderImage()
 	{
 		if ( imgWriter == null)
 			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "IMAGE_WRITER");
@@ -164,6 +164,7 @@ public class Camera
 				Color rayColor = rayTracer.traceRay(ray);
 				imgWriter.writePixel(j, i, rayColor); 
 			}
+		return this;
 
 	}
 	

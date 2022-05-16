@@ -1,5 +1,4 @@
 package primitives;
-import primitives.Double3;
 
 /**
  * 
@@ -14,6 +13,8 @@ public class Material
     public Double3 kS= new Double3(0);	//specular mekadem--how much the light is returned by the material
     public int nShininess=0;//shininess of the material
    
+    public Double3 kr=Double3.ZERO;//mekadem 'hishtakfut'
+    public Double3 kt=Double3.ZERO;//mekadem shkifut
 	
 	//******************setters****************
     /**
@@ -24,6 +25,26 @@ public class Material
 	public Material setKd(double _kD) 
 	{
 		this.kD = new Double3(_kD);
+		return this;
+	}
+	 /**
+     * set kt-shkifut mekadem--how much the light obsetves into the material
+     * @param _kD
+     * @return the material itself to allow design pattern of builder- to concatenate calls to setters.
+     */
+	public Material setKt(double _kD) 
+	{
+		this.kt = new Double3(_kD);
+		return this;
+	}
+	 /**
+     * set kr-hishtakfut mekadem--how much the light obsetves into the material
+     * @param _kD
+     * @return the material itself to allow design pattern of builder- to concatenate calls to setters.
+     */
+	public Material setKr(double _kD) 
+	{
+		this.kr = new Double3(_kD);
 		return this;
 	}
 	/**

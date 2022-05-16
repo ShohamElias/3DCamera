@@ -100,5 +100,9 @@ public class PointLight extends Light implements LightSource
 		return this;
 	}
 
-
+	@Override
+	public double getDistance(Point point) 
+	{
+		return position.distance(point);
+	}
 }

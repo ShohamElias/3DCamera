@@ -23,5 +23,13 @@ public interface LightSource
      * @return normalized vector
      */
 	public Vector getL(Point p);
+	
+	/**
+	 * A function that return the distance between 2 points
+	 * 
+	 * @param point Point3D value
+	 * @return double value for the distance
+	 * */
+	double getDistance(Point point);
 
 }

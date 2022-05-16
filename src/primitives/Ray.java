@@ -8,6 +8,14 @@ public class Ray
   private final Point p0;
   private final Vector dir;
   
+  /**
+	 * A constant for the size of moving first rays for shading rays
+	 * */
+	private static final double DELTA = 0.1;
+	
+	public static double getDeltha() {
+		return DELTA;
+	}
   public Ray(Point p, Vector v)
   {
 	  p0=p;
@@ -16,6 +24,27 @@ public class Ray
 
 public Point getP0() {
 	return p0;
+}
+/**
+ * Let us note that building a beam with moving a point - this is an operation that is repeated three times already, 
+ * so it is worthwhile to lower it to a separate function.
+ * The location of the function according to RDD is the fund department.
+ * Since this is a new fund construction (according to the original point,
+ * the direction of the fund, the normal vector (on the line it defines the point of the fund head must be moved))
+ * - we will add the function as another fund builder and update In all relevant places the code so that it will use the new builder of the fund. 
+ * Of course the permanent DELTA we defined earlier will be transferred to the Ray class
+ * @param point
+ * @param lightDirection
+ * @param norm
+ */
+public Ray(Point point, Vector lightDirection, Vector norm) {
+
+	this.dir = lightDirection.normalize();
+	double nV = norm.dotProduct(lightDirection);
+	Vector delta = norm.scale(nV >= 0 ? DELTA : -DELTA);
+	this.p0 = point.add(delta);
+
+
 }
 
 public Vector getDir() {
@@ -63,8 +92,19 @@ public Point findClosestPoint(List<Point> points)
  * @param lst_point 
  * @return GeoPoint ,the closest point to the ray
  */
-public GeoPoint findClosestGeoPoint (List<GeoPoint> lst_point) {
-	if (lst_point==null)//if the list is empty
+public GeoPoint findClosestGeoPoint (List<GeoPoint> intersections) {
+	if(intersections == null)
+		return null;
+	GeoPoint closet = intersections.get(0);
+	for (GeoPoint geoPoint : intersections) 
+	{
+		if(geoPoint.point.distance(p0) < closet.point.distance(p0))
+			closet= geoPoint;
+		
+	}
+	return closet;
+	
+	/*if (lst_point==null)//if the list is empty
 		return null;
 	double min_dis=p0.distance(lst_point.get(0).point);//for the sake of programming we assumed that the first point is the closest 
 	double dis;
@@ -77,7 +117,7 @@ public GeoPoint findClosestGeoPoint (List<GeoPoint> lst_point) {
 			target=lst_point.get(i);
 		}
 	}
-	return target;
+	return target;*/
 
 }
 }

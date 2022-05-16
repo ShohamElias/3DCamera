@@ -30,8 +30,8 @@ public class Sphere extends Geometry
 	@Override
 	public Vector getNormal(Point p)
 	{
-		if(center.distance(p)!=radius)
-			throw new IllegalArgumentException("out of the sphere");
+		//if(center.distance(p)!=radius)
+			//throw new IllegalArgumentException("out of the sphere");
 		return center.subtract(p).normalize();
 	}
 

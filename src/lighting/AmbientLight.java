@@ -19,8 +19,12 @@ public class AmbientLight extends Light
 	 * @param ia
 	 * @param ka
 	 */
-	public AmbientLight(Color ia, Double3 ka) {
+	public AmbientLight(Color ia, Double ka) {
 		super(ia.scale(ka));
+	}
+	public AmbientLight(Color color, Double3 double3) {
+		super(color.scale(double3));
+		// TODO Auto-generated constructor stub
 	}
 	
  

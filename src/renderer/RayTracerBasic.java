@@ -297,4 +297,22 @@ public class RayTracerBasic extends RayTracerBase
 		return ray.findClosestGeoPoint(intersections);
 	}
 	
+	 /**
+     * @param rays List of surrounding rays
+     * @return average color
+     */
+	@Override
+	public Color calcColorForSupersampling(List<Ray> rays) 
+	{
+		
+			Color bkg = scene.background;
+			Color color = Color.BLACK;
+			for (Ray ray : rays) {
+				GeoPoint gp = findClosestIntersection(ray);
+				color = color.add(gp == null ? bkg : calcColor(gp, ray));
+			}
+			color = color.add(scene.ambientLight.getIntensity());
+			int size = rays.size();
+			return (size == 1) ? color : color.reduce(size);
+		}
 }

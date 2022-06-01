@@ -92,7 +92,7 @@ public Point findClosestPoint(List<Point> points)
  * @param lst_point 
  * @return GeoPoint ,the closest point to the ray
  */
-public GeoPoint findClosestGeoPoint (List<GeoPoint> intersections) {
+public GeoPoint findClosestGeoPoint(List<GeoPoint> intersections) {
 	if(intersections == null)
 		return null;
 	GeoPoint closet = intersections.get(0);
@@ -103,21 +103,5 @@ public GeoPoint findClosestGeoPoint (List<GeoPoint> intersections) {
 		
 	}
 	return closet;
-	
-	/*if (lst_point==null)//if the list is empty
-		return null;
-	double min_dis=p0.distance(lst_point.get(0).point);//for the sake of programming we assumed that the first point is the closest 
-	double dis;
-	GeoPoint target=lst_point.get(0);//as above...
-	for(int i=1;i<lst_point.size();i++) {//this loop moves through the points of the given list and compares the distances between the 
-		//current point to the starting point of the ray 
-		dis=p0.distance(lst_point.get(i).point);
-		if(dis<min_dis) {
-			min_dis=dis;
-			target=lst_point.get(i);
-		}
-	}
-	return target;*/
-
 }
 }

@@ -8,6 +8,7 @@ import primitives.*;
  */
 abstract class Light 
 {
+	//עוצמה בקרניים עצמם ששולחים
 	private Color intensity;//the intensity of the light
 	
 	/* ************* constructors *******/

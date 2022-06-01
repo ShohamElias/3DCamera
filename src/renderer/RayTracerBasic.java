@@ -59,7 +59,7 @@ public class RayTracerBasic extends RayTracerBase
 
 	private Color calcColor(GeoPoint geoPoint, Ray ray) 
 	{
-		return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, new Double3(Ray.getDeltha())).add(scene.ambientLight.getIntensity());
+		return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, new Double3(Ray.getDeltha())) .add(scene.ambientLight.getIntensity());
 			
 	}
 	
@@ -134,7 +134,7 @@ public class RayTracerBasic extends RayTracerBase
 		Vector v = ray.getDir().normalize();
 		Vector n = intersection.geometry.getNormal(intersection.point);
 		double nv = alignZero(n.dotProduct(v));
-		if (nv == 0) //לא רואים את הנקודה עליה האור משפיע מחזיר שחור
+		if (nv == 0)//לא רואים את הנקודה עליה האור משפיע מחזיר שחור
 			return Color.BLACK;
 		//רוצים לבדוק את ההשפעה של האור עלי לפי סוג החומר ממנו הגוף עשוי
 		Material material = intersection.geometry.getMaterial();
@@ -149,17 +149,12 @@ public class RayTracerBasic extends RayTracerBase
 			if (nl * nv > 0) 
 			{ 
 				Double3 ktr = transparency(lightSource, l, n, intersection);
-				//if(unshaded(lightSource, l, n, intersection)) {
 				if (!(ktr.product(k)).lowerThan(MIN_CALC_COLOR_K)) 
-				{
-				// sign(nl) == sing(nv)
-					
-
+				{					
 					Color lightIntensity = lightSource.getIntensity(intersection.point).scale(ktr);;
 					color = color.add(calcDiffusive(kd, l, n, lightIntensity),//diffusive
 							calcSpecular(ks, l, n, v, nShininess, lightIntensity));				}
 			}
-		//	}
 		}
 		return color;
 	}
@@ -309,7 +304,7 @@ public class RayTracerBasic extends RayTracerBase
 			Color color = Color.BLACK;
 			for (Ray ray : rays) {
 				GeoPoint gp = findClosestIntersection(ray);
-				color = color.add(gp == null ? bkg : calcColor(gp, ray));
+				color = color.add(gp == null ? bkg : calcColor(gp, ray,MAX_CALC_COLOR_LEVEL,Double3.ONE));
 			}
 			color = color.add(scene.ambientLight.getIntensity());
 			int size = rays.size();

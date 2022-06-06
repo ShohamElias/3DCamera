@@ -59,7 +59,7 @@ public class RayTracerBasic extends RayTracerBase
 
 	private Color calcColor(GeoPoint geoPoint, Ray ray) 
 	{
-		return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, new Double3(Ray.getDeltha())) .add(scene.ambientLight.getIntensity());
+		return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, new Double3(Ray.getDeltha())).add(scene.ambientLight.getIntensity());
 			
 	}
 	
@@ -261,7 +261,7 @@ public class RayTracerBasic extends RayTracerBase
 		if (isZero(nv))
 			return null;
 		Vector r = v.subtract(normal.scale(nv*2)).normalize();
-		return new Ray(point.add(normal.scale(DELTA)), r, normal);
+		return new Ray(point.add(normal), r, normal);
 	}
 	
 	/**
@@ -298,8 +298,7 @@ public class RayTracerBasic extends RayTracerBase
      */
 	@Override
 	public Color calcColorForSupersampling(List<Ray> rays) 
-	{
-		
+	{		
 			Color bkg = scene.background;
 			Color color = Color.BLACK;
 			for (Ray ray : rays) {

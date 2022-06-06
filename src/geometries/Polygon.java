@@ -100,5 +100,11 @@ public class Polygon extends Geometry
 		return null;
 	}
 
+	@Override
+	protected void CreateBoundingBox() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

@@ -68,4 +68,10 @@ public class Sphere extends Geometry
 		else
 			return null;//no intersections
 	}
+
+	@Override
+	protected void CreateBoundingBox() {
+		// TODO Auto-generated method stub
+		
+	}
 }

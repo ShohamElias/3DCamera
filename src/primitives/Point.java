@@ -46,6 +46,14 @@ public class Point
 	{
 	  return xyz.d1;
 	}
+	public double getY()
+	{
+	  return xyz.d2;
+	}
+	public double getZ()
+	{
+	  return xyz.d3;
+	}
 	@Override
 	public String toString() 
 	{

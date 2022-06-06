@@ -72,4 +72,10 @@ public class Plane extends Geometry
 		}
 	}
 
+	@Override
+	protected void CreateBoundingBox() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

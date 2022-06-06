@@ -51,4 +51,9 @@ public class Tube extends Geometry
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	protected void CreateBoundingBox() {
+		// TODO Auto-generated method stub
+		
+	}
 }

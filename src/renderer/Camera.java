@@ -2,7 +2,7 @@ package renderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
-
+import java.util.stream.*;
 import lighting.AmbientLight;
 import primitives.*;
 import primitives.Util;
@@ -166,7 +166,7 @@ public class Camera
 	 */
 	private void renderImageThreaded()
 	{
-		final int nX = imgWriter.getNx();
+		/*final int nX = imgWriter.getNx();
 		final int nY = imgWriter.getNy();
 		final Pixel thePixel = new Pixel(nY, nX);
 		// Generate threads
@@ -193,7 +193,22 @@ public class Camera
 			}
 
 		if (print)
-			System.out.print("\r100%");
+			System.out.print("\r100%");*/
+		if (imgWriter == null)
+			throw new MissingResourceException("All the render's fields mustn't be null, including the camera", "Camera", null);
+		if (rayTracer == null)
+			throw new MissingResourceException("All the render's fields mustn't be null, including the imageWriter", "ImageWriter", null);
+		final int nX = imgWriter.getNx();
+		final int nY = imgWriter.getNy();
+
+		Pixel.initialize(nY, nX, Pixel.printInterval);
+		while (threadsCount-- > 0) {
+		 new Thread(() -> {
+		 for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+		 castRay(nX, nY, pixel.col, pixel.row);
+		 }).start();
+		}
+		Pixel.waitToFinish();
 	}
 
 	/**
@@ -431,116 +446,117 @@ public Camera setDebugPrint() {
  * @author Dan
  *
  */
-private class Pixel {
-	private long maxRows = 0;
-	private long maxCols = 0;
-	private long pixels = 0;
-	public volatile int row = 0;
-	public volatile int col = -1;
-	private long counter = 0;
-	private int percents = 0;
-	private long nextCounter = 0;
+class Pixel {
+	private static int maxRows = 0;
+	private static int maxCols = 0;
+	private static long totalPixels = 0l;
+
+	private static volatile int cRow = 0;
+	private static volatile int cCol = -1;
+	private static volatile long pixels = 0l;
+	private static volatile long last = -1l;
+	private static volatile int lastPrinted = -1;
+
+	private static boolean print = false;
+	private static long printInterval = 100l;
+	private static final String PRINT_FORMAT = "%5.1f%%\r";
+	private static Object mutexNext = new Object();
+	private static Object mutexPixels = new Object();
+
+	int row;
+	int col;
 
 	/**
-	 * The constructor for initializing the main follow up Pixel object
+	 * Initialize pixel data for multi-threading
 	 * 
-	 * @param maxRows the amount of pixel rows
-	 * @param maxCols the amount of pixel columns
+	 * @param maxRows  the amount of pixel rows
+	 * @param maxCols  the amount of pixel columns
+	 * @param interval print time interval in seconds, 0 if printing is not required
 	 */
-	public Pixel(int maxRows, int maxCols) {
-		this.maxRows = maxRows;
-		this.maxCols = maxCols;
-		this.pixels = (long) maxRows * maxCols;
-		this.nextCounter = this.pixels / 100;
-		if (Camera.this.print)
-			System.out.printf("\r %02d%%", this.percents);
+	static void initialize(int maxRows, int maxCols, double interval) {
+		Pixel.maxRows = maxRows;
+		Pixel.maxCols = maxCols;
+		Pixel.totalPixels = (long) maxRows * maxCols;
+		cRow = 0;
+		cCol = -1;
+		pixels = 0;
+		printInterval = (int) (interval * 1000);
+		print = printInterval != 0;
 	}
 
 	/**
-	 * Default constructor for secondary Pixel objects
-	 */
-	public Pixel() {
-	}
-
-	/**
-	 * Internal function for thread-safe manipulating of main follow up Pixel object
-	 * - this function is critical section for all the threads, and main Pixel
-	 * object data is the shared data of this critical section.<br/>
-	 * The function provides next pixel number each call.
+	 * Function for thread-safe manipulating of main follow up Pixel object - this
+	 * function is critical section for all the threads, and static data is the
+	 * shared data of this critical section.<br/>
+	 * The function provides next available pixel number each call.
 	 * 
-	 * @param target target secondary Pixel object to copy the row/column of the
-	 *               next pixel
-	 * @return the progress percentage for follow up: if it is 0 - nothing to print,
-	 *         if it is -1 - the task is finished, any other value - the progress
-	 *         percentage (only when it changes)
+	 * @return true if next pixel is allocated, false if there are no more pixels
 	 */
-	private synchronized int nextP(Pixel target) {
-		++col;
-		++this.counter;
-		if (col < this.maxCols) {
-			target.row = this.row;
-			target.col = this.col;
-			if (Camera.this.print && this.counter == this.nextCounter) {
-				++this.percents;
-				this.nextCounter = this.pixels * (this.percents + 1) / 100;
-				return this.percents;
+	public boolean nextPixel() {
+		synchronized (mutexNext) {
+			if (cRow == maxRows)
+				return false;
+			++cCol;
+			if (cCol < maxCols) {
+				row = cRow;
+				col = cCol;
+				return true;
 			}
-			return 0;
+			cCol = 0;
+			++cRow;
+			if (cRow < maxRows) {
+				row = cRow;
+				col = cCol;
+				return true;
+			}
+			return false;
 		}
-		++row;
-		if (row < this.maxRows) {
-			col = 0;
-			target.row = this.row;
-			target.col = this.col;
-			if (Camera.this.print && this.counter == this.nextCounter) {
-				++this.percents;
-				this.nextCounter = this.pixels * (this.percents + 1) / 100;
-				return this.percents;
-			}
-			return 0;
+	}
+
+	/**
+	 * Finish pixel processing
+	 */
+	static void pixelDone() {
+		synchronized (mutexPixels) {
+			++pixels;
 		}
-		return -1;
 	}
 
 	/**
-	 * Public function for getting next pixel number into secondary Pixel object.
-	 * The function prints also progress percentage in the console window.
-	 * 
-	 * @param target target secondary Pixel object to copy the row/column of the
-	 *               next pixel
-	 * @return true if the work still in progress, -1 if it's done
+	 * Wait for all pixels to be done and print the progress percentage - must be
+	 * run from the main thread
 	 */
-	public boolean nextPixel(Pixel target) {
-		int percent = nextP(target);
-		if (Camera.this.print && percent > 0)
-			synchronized (this) {
-				notifyAll();
+	public static void waitToFinish() {
+		if (print)
+			System.out.printf(PRINT_FORMAT, 0d);
+
+		while (last < totalPixels) {
+			printPixel();
+			try {
+				Thread.sleep(printInterval);
+			} catch (InterruptedException ignore) {
+				if (print)
+					System.out.print("");
 			}
-		if (percent >= 0)
-			return true;
-		if (Camera.this.print)
-			synchronized (this) {
-				notifyAll();
-			}
-		return false;
+		}
+		if (print)
+			System.out.println("100.0%");
 	}
 
 	/**
-	 * Debug print of progress percentage - must be run from the main thread
+	 * Print pixel progress percentage
 	 */
-	public void print() {
-		if (Camera.this.print)
-			while (this.percents < 100)
-				try {
-					synchronized (this) {
-						wait();
-					}
-					System.out.printf("\r %02d%%", this.percents);
-					System.out.flush();
-				} catch (Exception e) {
-				}
+	public static void printPixel() {
+		long current = pixels;
+		if (print && last != current) {
+			int percentage = (int) (1000l * current / totalPixels);
+			if (lastPrinted != percentage) {
+				last = current;
+				lastPrinted = percentage;
+				System.out.printf(PRINT_FORMAT, percentage / 10d);
+			}
+		}
 	}
 }
-
 }
 

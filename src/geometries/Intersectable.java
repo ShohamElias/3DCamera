@@ -48,8 +48,8 @@ public abstract class Intersectable
 	 * and setting the bounding to be true
 	 */
 	public void createBox() {
-		BVHactivated = true;
-		CreateBoundingBox();
+		BVHactivated = false;
+		//CreateBoundingBox();
 	}
 
 	/**

@@ -102,9 +102,30 @@ public class Polygon extends Geometry
 
 	@Override
 	protected void CreateBoundingBox() {
-		// TODO Auto-generated method stub
-		
+		minX = Double.MAX_VALUE;
+		minY = Double.MAX_VALUE;
+		minZ = Double.MAX_VALUE;
+		maxX = Double.MIN_VALUE;
+		maxY = Double.MIN_VALUE;
+		maxZ = Double.MIN_VALUE;
+		for (Point point : vertices) {
+			if (point.getX() < minX)
+				minX = point.getX();
+			if (point.getX() > maxX)
+				maxX = point.getX();
+			if (point.getY() < minY)
+				minY = point.getY();
+			if (point.getY() > maxY)
+				maxY = point.getY();
+			if (point.getZ() < minZ)
+				minZ = point.getZ();
+			if (point.getZ() > maxZ)
+				maxZ = point.getZ();
+		}
+		middleBoxPoint = getMiddlePoint();
+		finityShape = true;
+	}		
 	}
 
 	
-}
+

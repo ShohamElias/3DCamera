@@ -39,7 +39,6 @@ public class RayTracerBasic extends RayTracerBase
 	 */
 	private static final double MIN_CALC_COLOR_K = 0.001;
 	
-	private boolean isImprovement=true;//a boolean field that tells us if we want to display the image with improvement or not
 
 	public RayTracerBasic(Scene scene) 
 	{
@@ -301,7 +300,8 @@ public class RayTracerBasic extends RayTracerBase
 	{		
 			Color bkg = scene.background;
 			Color color = Color.BLACK;
-			for (Ray ray : rays) {
+			for (Ray ray : rays) 
+			{
 				GeoPoint gp = findClosestIntersection(ray);
 				color = color.add(gp == null ? bkg : calcColor(gp, ray,MAX_CALC_COLOR_LEVEL,Double3.ONE));
 			}

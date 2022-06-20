@@ -52,7 +52,7 @@ public class LightTests {
 
 		ImageWriter imageWriter = new ImageWriter("lightSphereDirectional", 500, 500);
 		camera1.setImageWriter(imageWriter) //
-				.setRayTracerBase(new RayTracerBasic(scene1)) //
+				.setRayTracerBase(new RayTracerBasic(scene1)).setSuperSamp() //
 				.renderImage() //
 		        .writeToImage(); //
 	}

@@ -1,11 +1,18 @@
 package unittest;
 
-import org.junit.Test;
+import static java.awt.Color.YELLOW;
 
-import lighting.*;
-import geometries.*;
-import primitives.*;
-import renderer.*;
+import org.junit.jupiter.api.Test;
+
+import geometries.Triangle;
+import lighting.PointLight;
+import primitives.Color;
+import primitives.Material;
+import primitives.Point;
+import primitives.Vector;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.RayTracerBasic;
 import scene.Scene;
 
 /**
@@ -14,8 +21,13 @@ import scene.Scene;
  * @author Dan
  */
 public class PictureTest {
+	private final ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
+
 	private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
-			.setDistance(1000).setVPSize(200, 200);
+			.setDistance(1000).setVPSize(200, 200) //
+			.setImageWriter(imageWriter) //
+			.setMultithreading(3).setDebugPrint();
+
 	private final Scene scene = new Scene("Test scene");
 
 	private static final Color color = new Color(200, 0, 0);
@@ -521,7 +533,7 @@ public class PictureTest {
 			new Point(-29.4887, 30.8773, 11.7922), //
 			new Point(-33.2582, 28.3457, 13.396), //
 			new Point(-12.1381, 34.3417, -1.10804), //
-			new Point(-22.62, 32.6095, -1.10804) , //
+			new Point(-22.62, 32.6095, -1.10804), //
 			new Point(-32.0359, 30.8773, -1.10804), //
 			new Point(-36.122, 28.3457, -1.10804), //
 			new Point(-11.133, 34.3417, -6.19841), //
@@ -551,15 +563,14 @@ public class PictureTest {
 			new Point(12.795, 34.3417, -6.19841), //
 			new Point(22.4646, 32.6095, -10.3125), //
 			new Point(31.1507, 30.8773, -14.0083), //
-			new Point(34.8094, 17.1865, -35.0864)
-			
+			new Point(34.8094, 17.1865, -35.0864) //
 	};
 
 	/**
 	 * Produce a scene with a 3D model and render it into a png image
 	 */
 	@Test
-	public void teapot1() {
+	public void teapot() {
 		scene.geometries.add( //
 				new Triangle(pnts[7], pnts[6], pnts[1]).setEmission(color).setMaterial(mat), //
 				new Triangle(pnts[1], pnts[2], pnts[7]).setEmission(color).setMaterial(mat), //
@@ -1554,26 +1565,9 @@ public class PictureTest {
 				new Triangle(pnts[470], pnts[469], pnts[529]).setEmission(color).setMaterial(mat), //
 				new Triangle(pnts[529], pnts[530], pnts[470]).setEmission(color).setMaterial(mat) //
 		);
-		scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, -100)) //
-				.setKq(0.000001));
-		scene.geometries.createBox();
-		scene.geometries.createGeometriesTree();
-		ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
-	
-		Camera camera1 = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
-				.setVPSize(200, 200) //
-				.setDistance(1000)
-				.setImageWriter(imageWriter)
-				.setRayTracerBase(new RayTracerBasic(scene))
-				.setMultithreading(3)//
-				.setDebugPrint()//
-				;
-		boolean flag = /* false */true;
-		if (flag) {
-			camera1.renderImage();
-			camera1.printGrid(50, new Color(java.awt.Color.YELLOW));
-			camera1.writeToImage();
-		}
+		scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, -100)).setKq(0.000001));
+
+		camera.setRayTracerBase(new RayTracerBasic(scene)).renderImage().printGrid(50, new Color(YELLOW)).writeToImage();
 	}
 
 }

@@ -24,19 +24,16 @@ public class Camera
 	private RayTracerBase rayTracer;
 	
 	
-    private int NumOfRaysSupersampling=10;
-	    private boolean isSupersampling=true;
-	    public Camera setSupersampling(boolean isSupersampling) {
-			this.isSupersampling = isSupersampling;
-			return this;
-		}
+    private int NumOfRaysSupersampling=5;
+	    private boolean isSupersampling=false;
 
 		/**
 	     * setter for the num of rays --builder 
 	     * @param numOfRaysSupersampling
 	     * @return
 	     */
-		public Camera setNumOfRaysSupersampling(int numOfRaysSupersampling) {
+		public Camera setNumOfRaysSupersampling(int numOfRaysSupersampling)
+		{
 			NumOfRaysSupersampling = numOfRaysSupersampling;
 			return this;
 		}
@@ -71,6 +68,12 @@ public class Camera
 	{
 		this.width=width;
 		this.height=height;
+		return this;
+	}
+	public Camera setSuperSamp()
+	{
+	
+		isSupersampling=true;
 		return this;
 	}
 	
@@ -166,35 +169,8 @@ public class Camera
 	 */
 	private void renderImageThreaded()
 	{
-		/*final int nX = imgWriter.getNx();
-		final int nY = imgWriter.getNy();
-		final Pixel thePixel = new Pixel(nY, nX);
-		// Generate threads
-		Thread[] threads = new Thread[threadsCount];
-		for (int i = threadsCount - 1; i >= 0; --i) {
-			threads[i] = new Thread(() -> {
-				Pixel pixel = new Pixel();
-				while (thePixel.nextPixel(pixel))
-					castRay(nX, nY, pixel.col, pixel.row);
-			});
-		}
-		// Start threads
-		for (Thread thread : threads)
-			thread.start();
-
-		// Print percents on the console
-		thePixel.print();
-
-		// Ensure all threads have finished
-		for (Thread thread : threads)
-			try {
-				thread.join();
-			} catch (Exception e) {
-			}
-
-		if (print)
-			System.out.print("\r100%");*/
-		if (imgWriter == null)
+		
+	if (imgWriter == null)
 			throw new MissingResourceException("All the render's fields mustn't be null, including the camera", "Camera", null);
 		if (rayTracer == null)
 			throw new MissingResourceException("All the render's fields mustn't be null, including the imageWriter", "ImageWriter", null);
@@ -202,10 +178,11 @@ public class Camera
 		final int nY = imgWriter.getNy();
 
 		Pixel.initialize(nY, nX, Pixel.printInterval);
-		while (threadsCount-- > 0) {
+		while (threadsCount-- > 0) 
+		{
 		 new Thread(() -> {
 		 for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-		 castRay(nX, nY, pixel.col, pixel.row);
+		  castRay(nX, nY, pixel.col, pixel.row) ;
 		 }).start();
 		}
 		Pixel.waitToFinish();
@@ -215,7 +192,8 @@ public class Camera
 	 * This function renders image's pixel color map from the scene included with
 	 * the Renderer object
 	 */
-	public Camera renderImage() {
+	public Camera renderImage() 
+	{
 		if ( imgWriter == null)
 			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "IMAGE_WRITER");
 		if (rayTracer == null)
@@ -233,34 +211,6 @@ public class Camera
 
 	}
 
-	/**
-	 * This function renders image's pixel color map from the scene included with
-	 * the Renderer object
-	 *
-	public Camera renderImage()
-	{
-		if ( imgWriter == null)
-			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "IMAGE_WRITER");
-		if (rayTracer == null)
-			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "RAY_TRACER");
-
-		int nX = imgWriter.getNx();
-		int nY = imgWriter.getNy();
-
-		for (int i = 0; i < nX; ++i)
-			for (int j = 0; j < nY; ++j)
-			{
-				castRay(nX, nY, j, i);
-				//Ray ray = constructRay(nX, nY, j, i);
-				//Color rayColor = rayTracer.traceRay(ray);
-	           //  List<Ray> rays = constructRaysThroughPixel(nX, nY, j, i, NumOfRaysSupersampling);
-	            // imgWriter.writePixel(j,i, rayTracer.calcColorForSupersampling(rays));
-				//imgWriter.writePixel(j, i, rayColor); 
-			}
-		return this;
-
-	}
-	*/
 	
 	/**
 	 * Cast ray from camera in order to color a pixel
@@ -280,7 +230,7 @@ public class Camera
 		    }
 	}
 	
-	public void printGrid(int interval, Color color) 
+	public Camera printGrid(int interval, Color color) 
 	{
 		if (imgWriter == null)
 			throw new MissingResourceException("Renderer resource not set", "RENDER_CLASS", "IMAGE_WRITER");
@@ -292,6 +242,7 @@ public class Camera
 			for (int j = 0; j < nX; ++j)
 				if (j % interval == 0 || i % interval == 0)
 					imgWriter.writePixel(j, i, color);
+		return this;
 	}
 	
 	/**
@@ -309,7 +260,7 @@ public class Camera
 	
 	public List<Ray> constructRaysThroughPixel (int nX, int nY, int j, int i, int raysAmount)
 	{
-	int numOfRays = (int)Math.floor(Math.sqrt(raysAmount)); //num of rays in each row or column
+	   int numOfRays = (int)Math.floor(Math.sqrt(raysAmount)); //num of rays in each row or column
 		
 		if (numOfRays==1) 
 			return List.of(constructRayThroughPixel(nX, nY, j, i));
@@ -371,6 +322,7 @@ private Ray constructRaysThroughPixel(double Ry,double Rx, double yi, double xj,
     
     return new Ray(p0,Vij);//create the ray throw the point we calculate here
 }
+
 public Ray constructRayThroughPixel(int nX, int nY, int j, int i ) 
 {
 	Point Pc;
@@ -402,7 +354,12 @@ public Ray constructRayThroughPixel(int nX, int nY, int j, int i )
 	return new Ray(p0, Vij);
 
 }
+
+
 //_______________________________________
+
+
+
 private int threadsCount = 0;
 private static final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores
 private boolean print = false; // printing progress percentage 

@@ -11,6 +11,8 @@ public class Plane extends Geometry
 {
 	private Point p0;
 	private Vector normal;
+	private static final double DELTA = 0.1;
+
 	public Plane(Point p, Vector v)
 	{
 		p0=p;
@@ -74,8 +76,31 @@ public class Plane extends Geometry
 
 	@Override
 	protected void CreateBoundingBox() {
-		// TODO Auto-generated method stub
-		
+		double x = normal.getX(), y = normal.getY(), z = normal.getZ();
+		if (y == 0 && z == 0) {
+			minX = maxX = p0.getX();
+			minX -= DELTA;
+			maxX += DELTA;
+		} else {
+			minX = Double.NEGATIVE_INFINITY;
+			maxX = Double.POSITIVE_INFINITY;
+		}
+		if (x == 0 && z == 0) {
+			minY = maxY = p0.getY();
+			minY -= DELTA;
+			maxY += DELTA;
+		} else {
+			minY = Double.NEGATIVE_INFINITY;
+			maxY = Double.POSITIVE_INFINITY;
+		}
+		if (x == 0 && y == 0) {
+			minZ = maxZ = p0.getZ();
+			minZ -= DELTA;
+			maxZ += DELTA;
+		} else {
+			minZ = Double.NEGATIVE_INFINITY;
+			maxZ = Double.POSITIVE_INFINITY;
+		}		
 	}
 
 }

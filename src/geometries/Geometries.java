@@ -134,6 +134,7 @@ protected void updateBoxSize(Intersectable a, Intersectable b) {
 	middleBoxPoint = getMiddlePoint();
 }
 
+
 /**
  * The function calculates the list that represents a binary tree of boxes
  * within boxes...<br>

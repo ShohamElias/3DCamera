@@ -71,7 +71,13 @@ public class Sphere extends Geometry
 
 	@Override
 	protected void CreateBoundingBox() {
-		// TODO Auto-generated method stub
-		
+		minX = center.getX() - radius;
+		maxX = center.getX() + radius;
+		minY = center.getY() - radius;
+		maxY = center.getY() + radius;
+		minZ = center.getZ() - radius;
+		maxZ = center.getZ() + radius;
+		middleBoxPoint = center;
+		finityShape = true;		
 	}
 }
